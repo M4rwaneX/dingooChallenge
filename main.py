@@ -57,7 +57,7 @@ sample[['Latitude_scaled', 'Longitude_scaled']] = scaler.fit_transform(sample[['
 kmeans = sklearn.cluster.KMeans(n_clusters=num_clusters, random_state=42)
 dbscan = sklearn.cluster.DBSCAN(eps=0.5)
 
-print(kmeans.cluster_centers_)
+#print(kmeans.cluster_centers_)
 
 sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 sample['Cluster_DBSCAN'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
