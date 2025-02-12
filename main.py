@@ -5,23 +5,24 @@ import seaborn as sns
 import sklearn
 import sklearn.cluster
 
-def max_distance_centroids(kmeans,centroids,sample):
+def max_mean_distance_centroids(kmeans,centroids,sample):
     max_distances = pd.Series(dtype=float)
+    mean_distances = pd.Series(dtype=float)
     for i in range(len(centroids)):
         points_cluster = sample.loc[kmeans.labels_ == i,
         ['Longitude_scaled', 'Latitude_scaled']].values
         points_cluster = np.array(points_cluster)
         distances = np.linalg.norm(points_cluster - centroids[i], axis=1)
-        max_distance = np.max(distances)
-        max_distances[i] = max_distance
-    return max_distances
+        max_distances[i] = np.max(distances)
+        mean_distances[i] = np.mean(distances)
+    return max_distances,mean_distances
+
+
 
 
 
 # Initialize database
 data_base = pd.read_excel(r"inputs\data_base.xlsx")
-
-print(data_base.info())
 
 # Plot the locations based on Longitude as x axis and Latitude as y axis
 plt.figure(figsize=(10, 6))
@@ -75,7 +76,7 @@ dbscan = sklearn.cluster.DBSCAN(eps=0.5)
 sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 sample['Cluster_DBSCAN'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 
-max_distances = max_distance_centroids(kmeans,kmeans.cluster_centers_,sample)
+max_distances,mean_distances = max_mean_distance_centroids(kmeans,kmeans.cluster_centers_,sample)
 
 
 # Plot clusters using kmeans
@@ -92,20 +93,22 @@ plt.legend(title="Cluster")
 plt.show()
 """
 
-# Plot clusters 0 and 5 using kmeans
+# Plot cluster n using kmeans
 
+n=2
 plt.figure(figsize=(10, 6))
-points_cluster = sample.loc[kmeans.labels_ == 0,
+points_cluster = sample.loc[kmeans.labels_ == n,
         ['Longitude_scaled', 'Latitude_scaled']].values
 sns.scatterplot(x=points_cluster[:, 0],
                 y=points_cluster[:, 1],
                 alpha=0.5)
 
-circle = plt.Circle(kmeans.cluster_centers_[0],
-                    max_distances[0],
+circle = plt.Circle(kmeans.cluster_centers_[n],
+                    mean_distances[n],
                     color='gray',
                     fill=False,
                     linestyle="dashed")
+
 plt.gca().add_patch(circle)
 plt.scatter(kmeans.cluster_centers_[0, 0],
             kmeans.cluster_centers_[0, 1],
@@ -113,7 +116,7 @@ plt.scatter(kmeans.cluster_centers_[0, 0],
             marker='x',
             s=200,
             label="Centroïdes")
-plt.title("Clustered Delivery Routes using KMEANS")
+plt.title("Cluster 0")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.legend(title="Cluster")
