@@ -95,7 +95,7 @@ plt.show()
 
 # Plot cluster n using kmeans
 
-n=2
+n=0
 plt.figure(figsize=(10, 6))
 points_cluster = sample.loc[kmeans.labels_ == n,
         ['Longitude_scaled', 'Latitude_scaled']].values
