@@ -13,6 +13,13 @@ And zoomed, we get :
   
   
 The first thing that surprises me is that globaly, 
-we have a huge cluster with some few points that we will have to treat apart.
+we have a huge cluster with some few points that we will have to treat apart.  
+
+We can look for where the density if the highest using a density map :  
+![Texte alternatif](src/density_heatmap.PNG)
+  
+Not surprisingly, the highest density is near the city center.
+
+## Clusters
 
 
