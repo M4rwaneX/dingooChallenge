@@ -6,15 +6,17 @@ import sklearn
 import sklearn.cluster
 
 def max_distance_centroids(kmeans,centroids,sample):
-
     max_distances = pd.Series(dtype=float)
     for i in range(len(centroids)):
-        points_cluster = sample.loc[kmeans.labels_ == i, ['GPS - Longitude', 'GPS - Latitude']].values
+        points_cluster = sample.loc[kmeans.labels_ == i,
+        ['Longitude_scaled', 'Latitude_scaled']].values
         points_cluster = np.array(points_cluster)
         distances = np.linalg.norm(points_cluster - centroids[i], axis=1)
         max_distance = np.max(distances)
         max_distances[i] = max_distance
     return max_distances
+
+
 
 # Initialize database
 data_base = pd.read_excel(r"inputs\data_base.xlsx")
@@ -73,16 +75,48 @@ dbscan = sklearn.cluster.DBSCAN(eps=0.5)
 sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 sample['Cluster_DBSCAN'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 
-#print(max_distance_centroids(kmeans,kmeans.cluster_centers_,sample))
+max_distances = max_distance_centroids(kmeans,kmeans.cluster_centers_,sample)
+
 
 # Plot clusters using kmeans
+"""
 plt.figure(figsize=(10, 6))
-sns.scatterplot(x=sample['GPS - Longitude'], y=sample['GPS - Latitude'], hue=sample['Cluster_kmeans'], palette='viridis')
+sns.scatterplot(x=sample['Longitude_scaled'], y=sample['Latitude_scaled'], hue=sample['Cluster_kmeans'], palette='viridis')
+circle = plt.Circle(kmeans.cluster_centers_[0], max_distances[0], color='gray', fill=False, linestyle="dashed")
+plt.gca().add_patch(circle)
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], c='red', marker='x', s=200, label="Centroïdes")
 plt.title("Clustered Delivery Routes using KMEANS")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.legend(title="Cluster")
-#print(sample['Cluster_kmeans'])
+plt.show()
+"""
+
+# Plot clusters 0 and 5 using kmeans
+
+plt.figure(figsize=(10, 6))
+points_cluster = sample.loc[kmeans.labels_ == 0,
+        ['Longitude_scaled', 'Latitude_scaled']].values
+sns.scatterplot(x=points_cluster[:, 0],
+                y=points_cluster[:, 1],
+                alpha=0.5)
+
+circle = plt.Circle(kmeans.cluster_centers_[0],
+                    max_distances[0],
+                    color='gray',
+                    fill=False,
+                    linestyle="dashed")
+plt.gca().add_patch(circle)
+plt.scatter(kmeans.cluster_centers_[0, 0],
+            kmeans.cluster_centers_[0, 1],
+            c='red',
+            marker='x',
+            s=200,
+            label="Centroïdes")
+plt.title("Clustered Delivery Routes using KMEANS")
+plt.xlabel("Longitude")
+plt.ylabel("Latitude")
+plt.legend(title="Cluster")
 plt.show()
 
 # Plot clusters using DBSCAN
