@@ -17,8 +17,30 @@ def max_mean_distance_centroids(kmeans,centroids,sample):
         mean_distances[i] = np.mean(distances)
     return max_distances,mean_distances
 
-def compute_barycentre(points_cluster):
-    return None
+def max_mean_distance_barycenter(kmeans,barycenters,sample):
+    max_distances = pd.Series(dtype=float)
+    mean_distances = pd.Series(dtype=float)
+    for i in range(len(barycenters)):
+        points_cluster = sample.loc[kmeans.labels_ == i,
+        ['Longitude_scaled', 'Latitude_scaled']].values
+        points_cluster = np.array(points_cluster)
+        distances = np.linalg.norm(points_cluster - barycenters[i], axis=1)
+        max_distances[i] = np.max(distances)
+        mean_distances[i] = np.mean(distances)
+    return max_distances,mean_distances
+
+def compute_barycenters(kmeans,centroids,sample):
+    barycenters = []
+    for i in range(len(centroids)):
+        points_cluster = sample.loc[kmeans.labels_ == i,
+        ['Longitude_scaled', 'Latitude_scaled']].values
+        sum_x = 0
+        sum_y = 0
+        for i in range(len(points_cluster)):
+            sum_x = sum_x + points_cluster[i][0]
+            sum_y = sum_y + points_cluster[i][1]
+        barycenters.append([sum_x/len(points_cluster),sum_y/len(points_cluster)])
+    return barycenters
 
 
 
@@ -28,14 +50,19 @@ def compute_barycentre(points_cluster):
 data_base = pd.read_excel(r"inputs\data_base.xlsx")
 
 # Plot the locations based on Longitude as x axis and Latitude as y axis
+
+"""
 plt.figure(figsize=(10, 6))
 sns.scatterplot(x=data_base['GPS - Longitude'], y=data_base['GPS - Latitude'], alpha=0.5)
 plt.title("Delivery Locations Distribution")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.show()
+"""
 
 # Plot the density heatmap
+
+"""
 plt.figure(figsize=(10, 6))
 sns.kdeplot(
     x=data_base['GPS - Longitude'], 
@@ -46,6 +73,7 @@ plt.title("Delivery Density Heatmap")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.show()
+"""
 
 
 # Plot the locations based on Longitude as x axis and Latitude as y axis but this time sorted by postal code
@@ -79,7 +107,10 @@ dbscan = sklearn.cluster.DBSCAN(eps=0.5)
 sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 sample['Cluster_DBSCAN'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 
-max_distances,mean_distances = max_mean_distance_centroids(kmeans,kmeans.cluster_centers_,sample)
+max_distances_centroid,mean_distances_centroid = max_mean_distance_centroids(kmeans,kmeans.cluster_centers_,sample)
+barycenters = compute_barycenters(kmeans,kmeans.cluster_centers_,sample)
+max_distances_barycenter,mean_distances_barycenter = max_mean_distance_barycenter(kmeans,barycenters,sample)
+
 
 
 # Plot clusters using kmeans
@@ -96,8 +127,8 @@ plt.legend(title="Cluster")
 plt.show()
 """
 
-# Plot cluster n using kmeans
-
+# Plot n cluster using kmeans with circles based centroids
+"""
 plt.figure(figsize=(10, 6))
 for n in range(4,7):
     points_cluster = sample.loc[kmeans.labels_ == n,
@@ -107,7 +138,7 @@ for n in range(4,7):
                     alpha=0.5)
 
     circle = plt.Circle(kmeans.cluster_centers_[n],
-                        max_distances[n],
+                        max_distances_centroids[n],
                         color='gray',
                         fill=False,
                         linestyle="dashed")
@@ -118,6 +149,36 @@ for n in range(4,7):
                 marker='x',
                 s=200,
                 label="Centroïdes " + str(n))
+
+plt.title("Clusters")
+plt.xlabel("Longitude")
+plt.ylabel("Latitude")
+plt.legend(title="Cluster")
+plt.show()
+"""
+
+# Plot n clusters using kmeans with circles based on barycenters
+
+plt.figure(figsize=(10, 6))
+for n in range(6):
+    points_cluster = sample.loc[kmeans.labels_ == n,
+            ['Longitude_scaled', 'Latitude_scaled']].values
+    sns.scatterplot(x=points_cluster[:, 0],
+                    y=points_cluster[:, 1],
+                    alpha=0.5)
+
+    circle = plt.Circle(barycenters[n],
+                        max_distances_barycenter[n],
+                        color='gray',
+                        fill=False,
+                        linestyle="dashed")
+
+    plt.gca().add_patch(circle)
+    plt.scatter(barycenters[n][0],
+                barycenters[n][1],
+                marker='x',
+                s=200,
+                label="Barycenter " + str(n))
 
 plt.title("Clusters")
 plt.xlabel("Longitude")
