@@ -58,3 +58,12 @@ which leads to a huge circle with a lot of blank spaces. Let's see the other
 clusters for exemple 4,5 and 6.
 
 ![Texte alternatif](src/clusters_kmeans_4_to_6.png)
+
+We see that the problem remains. Good thing is that the clusters seems to be coherent.
+This means that centroids won't be usefull. Let's try another approach and compute "new" centroids, which are called barycenter, using the cluster found by kmeans. I will use this formula :
+
+![Texte alternatif](src/formula_barycenter_1.png)
+![Texte alternatif](src/formula_barycenter_2.png)
+
+
+
