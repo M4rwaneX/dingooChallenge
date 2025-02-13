@@ -95,28 +95,28 @@ plt.show()
 
 # Plot cluster n using kmeans
 
-n=0
 plt.figure(figsize=(10, 6))
-points_cluster = sample.loc[kmeans.labels_ == n,
-        ['Longitude_scaled', 'Latitude_scaled']].values
-sns.scatterplot(x=points_cluster[:, 0],
-                y=points_cluster[:, 1],
-                alpha=0.5)
+for n in range(4,7):
+    points_cluster = sample.loc[kmeans.labels_ == n,
+            ['Longitude_scaled', 'Latitude_scaled']].values
+    sns.scatterplot(x=points_cluster[:, 0],
+                    y=points_cluster[:, 1],
+                    alpha=0.5)
 
-circle = plt.Circle(kmeans.cluster_centers_[n],
-                    mean_distances[n],
-                    color='gray',
-                    fill=False,
-                    linestyle="dashed")
+    circle = plt.Circle(kmeans.cluster_centers_[n],
+                        max_distances[n],
+                        color='gray',
+                        fill=False,
+                        linestyle="dashed")
 
-plt.gca().add_patch(circle)
-plt.scatter(kmeans.cluster_centers_[0, 0],
-            kmeans.cluster_centers_[0, 1],
-            c='red',
-            marker='x',
-            s=200,
-            label="Centroïdes")
-plt.title("Cluster 0")
+    plt.gca().add_patch(circle)
+    plt.scatter(kmeans.cluster_centers_[n, 0],
+                kmeans.cluster_centers_[n, 1],
+                marker='x',
+                s=200,
+                label="Centroïdes " + str(n))
+
+plt.title("Clusters")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.legend(title="Cluster")
