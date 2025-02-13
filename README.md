@@ -37,5 +37,22 @@ It will use centroids that will choose locations that minimizes the distance fro
 By the way, these centroids will give us a good position for the restock "hub" because in each cluster,
 the centroids have the lowest distance from each locations of the cluster.
 
+First, I applied the algorithm and plot the result raw :
 
 ![Texte alternatif](src/clusters_kmeans.png)
+
+As we can see, clusters seems to be found but It is clearly not visible.
+Lets try to plot circles that take as center the centroid of the cluster and the radius
+the maximum of the distances from the centroid.
+
+![Texte alternatif](src/clusters_kmeans_circles.png)
+
+It starts to be much more visible but let's remove some clusters and take
+only 0,1 and 2.
+
+![Texte alternatif](src/clusters_kmeans_0_to_2.png)
+
+Cluster 0 and 1 are very acceptable since they manage to gather very closely the locations.
+But the problem is with cluster 2, we see that most of the locations are far from the centroid
+which leads to a huge circle with a lot of blank spaces. Let's see the other
+clusters for exemple 4,5 and 6.
