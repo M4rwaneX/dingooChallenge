@@ -40,9 +40,29 @@ the centroids have the lowest distance from each locations of the cluster.
 
 Note that I have used `random_state = 42` in this part to be able to compare data without worrying about randomness.
 
-First, I applied the algorithm and plot the result raw :
+From what I have read from the documentation, the initialization of the centroid is by default on the option `k-mean++` which mean there no reasons to apply the algorithm multiple times with random centroids and keep the best. This is what I would have done if I had to implement the algorithm alone.
+
+### Metrics
+
+I didn't know metrics to evaluate clusters so I have done research and came across silhouette score. I will be using the one from `sklearn`.
+
+
+
+### First call to the algorithm
+
+First, I applied the algorithm and plot the result raw.
+
+![Texte alternatif](src/clusters_kmeans_unscaled.png)
+
+### Scaling data
+
+We see that we have outline values that KMeans has trouble to process.
+A simple solution is to scale the data :
 
 ![Texte alternatif](src/clusters_kmeans.png)
+
+
+### Plot the circles based on the centroids
 
 As we can see, clusters seems to be found but It is clearly not visible.
 Lets try to plot circles that take as center the centroid of the cluster and the radius
@@ -54,6 +74,7 @@ It starts to be much more visible but let's remove some clusters and take
 only 0,1 and 2.
 
 ![Texte alternatif](src/clusters_kmeans_0_to_2.png)
+
 
 Cluster 0 and 1 are very acceptable since they manage to gather very closely the locations.
 But the problem is with cluster 2, we see that most of the locations are far from the centroid
@@ -73,6 +94,12 @@ Now let's plot the circles but this time around the barycenters :
 ![Texte alternatif](src/clusters_kmeans_circles_barycenters.PNG)
 
 We see that the barycenters seems to be much more coherent to use. My question is what if we train kmean one time on random centroids to have an idea of where the centroids are then train it again using the barycenters that we have just computed ? So let's try :
+
+![Texte alternatif](src/clusters_kmeans_basedon_barycenters.PNG)
+
+Here, the same problem seen before, the centroids are too far away from the clusters so let's compute again barycenters of the new clusters:
+
+![Texte alternatif](src/clusters_kmeans_basedon_barycenters_1.PNG)
 
 
 
