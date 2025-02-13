@@ -56,3 +56,5 @@ Cluster 0 and 1 are very acceptable since they manage to gather very closely the
 But the problem is with cluster 2, we see that most of the locations are far from the centroid
 which leads to a huge circle with a lot of blank spaces. Let's see the other
 clusters for exemple 4,5 and 6.
+
+![Texte alternatif](src/clusters_kmeans_4_to_6.png)
