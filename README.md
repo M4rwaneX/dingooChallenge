@@ -65,5 +65,12 @@ This means that centroids won't be usefull. Let's try another approach and compu
 ![Texte alternatif](src/formula_barycenter_1.png)
 ![Texte alternatif](src/formula_barycenter_2.png)
 
+Now let's plot the circles but this time around the barycenters :
+
+![Texte alternatif](src/clusters_kmeans_circles_barycenters.PNG)
+
+We see that the barycenters seems to be much more coherent to use. My question is what if we train kmean one time on random centroids to have an idea of where the centroids are then train it again using the barycenters that we have just computed ? So let's try :
+
+
 
 
