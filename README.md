@@ -1,5 +1,6 @@
 # Dingoo Challenge
 
+
 ## EDA (Exploratory Data Analysis)
 
 Firstly, the data doesn't have any missing values. 
@@ -36,6 +37,8 @@ Since the number of locations inside a cluster is a parameter, I am going to use
 It will use centroids that will choose locations that minimizes the distance from them.
 By the way, these centroids will give us a good position for the restock "hub" because in each cluster,
 the centroids have the lowest distance from each locations of the cluster.
+
+Note that I have used `random_state = 42` in this part to be able to compare data without worrying about randomness.
 
 First, I applied the algorithm and plot the result raw :
 
