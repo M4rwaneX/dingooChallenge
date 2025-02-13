@@ -17,6 +17,9 @@ def max_mean_distance_centroids(kmeans,centroids,sample):
         mean_distances[i] = np.mean(distances)
     return max_distances,mean_distances
 
+def compute_barycentre(points_cluster):
+    return None
+
 
 
 
@@ -60,7 +63,7 @@ plt.show()
 # Selects 200 to 300 deliveries from the dataset
 sample = data_base.sample(n=np.random.randint(200, 301), random_state=42)
 
-#
+# We want about 20 to 30 locations for each clusters
 num_clusters = len(sample) // 25
 
 # Scaling Latitude and Longitude
