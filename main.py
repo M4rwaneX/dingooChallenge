@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import sklearn
 import sklearn.cluster
+import sklearn.metrics
 
 def max_mean_distance_centroids(kmeans,centroids,sample):
     max_distances = pd.Series(dtype=float)
@@ -94,16 +95,28 @@ sample = data_base.sample(n=np.random.randint(200, 301), random_state=42)
 # We want about 20 to 30 locations for each clusters
 num_clusters = len(sample) // 25
 
+
+
+# Plot clusters without scaling
+
+"""
+kmeans = sklearn.cluster.KMeans(n_clusters=num_clusters, random_state=42)
+dbscan = sklearn.cluster.DBSCAN(eps=0.5)
+sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['GPS - Latitude', 'GPS - Longitude']])
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=sample['GPS - Longitude'], y=sample['GPS - Latitude'], hue=sample['Cluster_kmeans'], palette='viridis')
+plt.title("Clustered Delivery Routes using KMEANS")
+plt.xlabel("Longitude")
+plt.ylabel("Latitude")
+plt.legend(title="Cluster")
+plt.show()
+"""
+
 # Scaling Latitude and Longitude
 scaler = sklearn.preprocessing.StandardScaler()
 sample[['Latitude_scaled', 'Longitude_scaled']] = scaler.fit_transform(sample[['GPS - Latitude', 'GPS - Longitude']])
-
 kmeans = sklearn.cluster.KMeans(n_clusters=num_clusters, random_state=42)
 dbscan = sklearn.cluster.DBSCAN(eps=0.5)
-
-
-
-
 sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 sample['Cluster_DBSCAN'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 
@@ -227,6 +240,7 @@ plt.legend(title="Cluster")
 plt.show()
 """
 
+
 barycenters = compute_barycenters(kmeans,kmeans.cluster_centers_,sample)
 kmeans_barycenters = sklearn.cluster.KMeans(n_clusters=num_clusters,init=barycenters)
 sample['Cluster_kmeans_barycenters'] = kmeans_barycenters.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
@@ -253,11 +267,14 @@ for n in range(6):
                 s=200,
                 label="Barycenter " + str(n))
 
+print(sklearn.metrics.silhouette_score(sample))
+
 plt.title("Clusters")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.legend(title="Cluster")
 plt.show()
+
 
 # Plot clusters using DBSCAN
 """
