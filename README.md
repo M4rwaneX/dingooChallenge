@@ -83,15 +83,15 @@ only 0,1 and 2.
 ![Texte alternatif](src/clusters_kmeans_0_to_2.png)
 
 
-Cluster 0 and 1 are very acceptable since they manage to gather very closely the locations.
-But the problem is with cluster 2, we see that most of the locations are far from the centroid
-which leads to a huge circle with a lot of blank spaces. Let's see the other
-clusters for exemple 4,5 and 6.
+And now clusters 4,5 and 6.
 
 ![Texte alternatif](src/clusters_kmeans_4_to_6.png)
 
-We see that the problem remains. Good thing is that the clusters seems to be coherent.
-This means that centroids won't be useful. Let's try another approach and compute "new" centroids, which are called barycenter, using the cluster found by kmeans. I will use this formula :
+We see that the centroids don't really represent the center of the clusters
+which means they won't be useful to know where to put the "restock hubs".
+Let's try another approach and compute the barycenters of the clusters
+using these formulas :
+
 
 ![Texte alternatif](src/formula_barycenter_1.png)
 ![Texte alternatif](src/formula_barycenter_2.png)
@@ -100,13 +100,22 @@ Now let's plot the circles but this time around the barycenters :
 
 ![Texte alternatif](src/clusters_kmeans_circles_barycenters.PNG)
 
-We see that the barycenters seems to be much more coherent to use. My question is what if we train kmean one time on random centroids to have an idea of where the centroids are then train it again using the barycenters that we have just computed ? So let's try :
-
-![Texte alternatif](src/clusters_kmeans_basedon_barycenters.PNG)
-
-Here, the same problem seen before, the centroids are too far away from the clusters so let's compute again barycenters of the new clusters:
+We see that the barycenters seems to be much more coherent to use. 
+So my question is what if we train kmean one time on random centroids 
+to have an idea of where the centroids are then train it again using 
+the barycenters that we have just computed ? 
+I thought about it because KMeans minimizes the distances from the centroids and since barycenters
+are the "mean" of the minimum when it comes to the distances from locations of the cluster.
+So let's try :
 
 ![Texte alternatif](src/clusters_kmeans_basedon_barycenters_1.PNG)
+
+We get a `silouhette_score = 0.4104913499777463` which makes it a bit worst than before.
+Yet, let's not forget that it makes it worst on this particular case (cf removed randomness) but it doesn't mean
+it will be worst for other cases. 
+Which means we will have to do some statistics to see if it is true or not.
+
+
 
 
 
