@@ -136,7 +136,7 @@ plt.show()
 """
 
 # Plot n cluster using kmeans with circles based centroids
-
+"""
 max_distances_centroid,mean_distances_centroid = max_mean_distance_centroids(kmeans,kmeans.cluster_centers_,sample)
 plt.figure(figsize=(10, 6))
 for n in range(4,7):
@@ -168,7 +168,7 @@ plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.legend(title="Cluster")
 plt.show()
-
+"""
 
 
 # Plot n clusters using kmeans with circles based on barycenters
@@ -198,6 +198,8 @@ for n in range(6):
                 s=200,
                 label="Barycenter " + str(n))
 
+
+
 plt.title("Clusters")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
@@ -207,13 +209,13 @@ plt.show()
 
 # Plot kmeans initialized with barycenters
 
-"""
+
 barycenters = compute_barycenters(kmeans,kmeans.cluster_centers_,sample)
 kmeans_barycenters = sklearn.cluster.KMeans(n_clusters=num_clusters,init=barycenters)
 sample['Cluster_kmeans_barycenters'] = kmeans_barycenters.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
 max_distances_barycenter,mean_distances_barycenter = max_mean_distance_barycenter(kmeans_barycenters,barycenters,sample)
 plt.figure(figsize=(10, 6))
-for n in range(6):
+for n in range(len(kmeans_barycenters.cluster_centers_)):
     points_cluster = sample.loc[kmeans_barycenters.labels_ == n,
             ['Longitude_scaled', 'Latitude_scaled']].values
     sns.scatterplot(x=points_cluster[:, 0],
@@ -233,12 +235,16 @@ for n in range(6):
                 s=200,
                 label="Barycenter " + str(n))
 
+print(sklearn.metrics.silhouette_score(
+    sample[['Latitude_scaled', 'Longitude_scaled']],
+    sample['Cluster_kmeans_barycenters']))
+
 plt.title("Clusters")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.legend(title="Cluster")
 plt.show()
-"""
+
 
 """
 barycenters = compute_barycenters(kmeans,kmeans.cluster_centers_,sample)
