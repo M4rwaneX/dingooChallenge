@@ -5,11 +5,12 @@ import seaborn as sns
 import sklearn
 import data_base
 import kmeans
+import statistics_clusters
 
 # Initialize database
-data_base = data_base.DataBase(r"inputs\data_base.xlsx")
+database = data_base.DataBase(r"inputs\data_base.xlsx")
 kmeans_plots = kmeans.KMeans_plots(25,
-                                   data_base.get_random_sample(250,42),
+                                   database.get_random_sample(250,42),
                                    42)
 
 
@@ -53,7 +54,9 @@ kmeans_plots.plot_kmeans_circles_centroids()
 kmeans_plots.plot_kmeans_circles_barycenters()
 """
 # Plot kmeans initialized with barycenters
+"""
 kmeans_plots.plot_kmeans_based_on_barycenters()
+"""
 
 
 """
@@ -95,16 +98,6 @@ plt.show()
 """
 
 
+stats = statistics_clusters.statistics_clusters(database)
+stats.plot_silhouette_scores(50)
 
-# Plot clusters using DBSCAN
-"""
-plt.figure(figsize=(10, 6))
-sns.scatterplot(x=sample['GPS - Longitude'], y=sample['GPS - Latitude'], hue=sample['Cluster_DBSCAN'], palette='viridis')
-plt.title("Clustered Delivery Routes using DBSCAN")
-plt.xlabel("Longitude")
-plt.ylabel("Latitude")
-plt.legend(title="Cluster")
-plt.show()
-"""
-
-#daily_sample.to_csv("clustered_deliveries.csv", index=False)
