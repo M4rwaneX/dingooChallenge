@@ -146,9 +146,24 @@ I will choose seed from `random_state = 0` to `random_state = 100`.
 We get `silhouette_score_centroid = 0.4451892411594596` and 
 `silhouette_score_barycenters = 0.4282781939417761` which means in this case, my method
 is slightly less efficient. To go even further, I should play with the other parameters
-such as the number of locations inside each clusters for exemple.
+such as the number of locations inside each clusters for exemple. There are also a lot of 
+statistical aspect that I dont approach (hypothesis, standard deviation etc) 
+because of time.
 
 ### Another approach : numbers of clusters
+
+Now that I thought about statistics, there is one parameter that I should
+have thought about directly : the number of clusters.
+We are capped because we want between 20 to 30 locations per clusters,
+but we still have a margin of approach. We come back on the "normal"
+centroid approach.
+
+So let's see what results we have if we lock again `random_state = 42`.
+`loc_per_clusters` will go from 5 to 60 (not (20 - 30) because even if we are capped,
+we want to see if the maximum we found might be only local ), we are going to see
+how `silhouette_score_centroid` change.
+
+![Texte alternatif](src/stats_scores_k.png)
 
 
 
