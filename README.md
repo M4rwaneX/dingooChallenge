@@ -165,6 +165,13 @@ how `silhouette_score_centroid` change.
 
 ![Texte alternatif](src/stats_scores_k.png)
 
+We see that the maximum for our range is around 20 locations per clusters. Let's not forget
+that it is only for `random_state = 42`.
+Since we are looking for an answer, let's find the maximum for multiple seeds (here a 100)
+and compute the barycenter of all those points, this way we will have a weighted mean of
+the coordinates.
+
+
 
 
 
