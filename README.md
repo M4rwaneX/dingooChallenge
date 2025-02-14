@@ -4,6 +4,13 @@
 ## About the code
 
 Every plots that I have used is available in the differents `.py` files.
+Each method is describe and what it should ouput.
+
+Note: I am aware that this is not flexible enough to be able to receive other
+types of data (for exemple another type of excel etc). I thought about a
+pipeline that would probably support the whole thing but I don't think
+I will have time to implement it before saturday.
+This one is robust enough as long as columns names are respected.
 
 ## EDA (Exploratory Data Analysis)
 
