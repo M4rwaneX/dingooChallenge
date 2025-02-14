@@ -49,6 +49,10 @@ It will use centroids that will choose locations that minimizes the distance fro
 By the way, these centroids will give us a good position for the restock "hub" because in each cluster,
 the centroids have the lowest distance from each locations of the cluster.
 
+Note: my review is structured temporally (even though I had to comeback on certain parts to
+correct them), I tried to explore and report like the way I would think about it.
+
+
 
 ### Metrics
 
@@ -66,7 +70,7 @@ but chosen randomly (`random_state = 42`), I will select 250 locations from a fi
 
 First, I applied the algorithm and plot the result raw.
 
-![Texte alternatif](src/clusters_kmeans_unscaled.png)
+![Texte alternatif](src/clusterskmeansunscaled.PNG)
 
 ### Scaling data
 
@@ -104,8 +108,8 @@ Let's try another approach and compute the barycenters of the clusters
 using these formulas :
 
 
-![Texte alternatif](src/formula_barycenter_1.png)
-![Texte alternatif](src/formula_barycenter_2.png)
+![Texte alternatif](src/formula_barycenter_1.PNG)
+![Texte alternatif](src/formula_barycenter_2.PNG)
 
 Now let's plot the circles but this time around the barycenters :
 
@@ -121,13 +125,22 @@ So let's try :
 
 ![Texte alternatif](src/clusters_kmeans_basedon_barycenters_1.PNG)
 
-We get a `silouhette_score = 0.4104913499777463` which makes it a bit worst than before but still relatively close.
+We get a `silouhette_score = 0.4104913499777463` which makes it a bit worse than before but still relatively close.
 Yet, let's not forget that it makes 
 it worst on this particular case (cf removed randomness) but it doesn't mean
 it will be worst for other cases. 
 Which means we will have to do some statistics to see if it is true or not.
 
 ### Statistics
+
+Since statistics can easily become really deep, I am going to stay on the surface.
+I am going to use the `random_state` to range and sample data : 
+for each kmeans that will be computed on this seed, I will compute the silhouette score
+of the one generated using "normal centroids" and the one using barycenters as centroids.
+I am going to assume to compare the mean of the silhouette scores.
+I will choose seed from `random_state = 0` to `random_state = 100`.
+
+
 
 
 
