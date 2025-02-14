@@ -48,6 +48,16 @@ class KMeans_plots:
     def get_k(self):
         return len(self.sample)//self.loc_per_clusters
 
+    def get_silouhette_score_barycenters(self):
+        return sklearn.metrics.silhouette_score(
+            self.sample[['Latitude_scaled', 'Longitude_scaled']],
+            self.sample['Cluster_kmeans_barycenters'])
+
+    def get_silouhette_score_centroid(self):
+        return sklearn.metrics.silhouette_score(
+            self.sample[['Latitude_scaled', 'Longitude_scaled']],
+            self.sample['Cluster_kmeans'])
+
     def plot_kmeans_no_scaling(self):
         plt.figure(figsize=(10, 6))
         sns.scatterplot(x=self.sample['GPS - Longitude'], y=self.sample['GPS - Latitude'], hue=self.sample['Cluster_kmeans'],
