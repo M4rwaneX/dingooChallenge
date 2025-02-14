@@ -1,6 +1,10 @@
 # Dingoo Challenge
 
 
+## About the code
+
+Every plots that I have used is available in the differents `.py` files.
+
 ## EDA (Exploratory Data Analysis)
 
 Firstly, the data doesn't have any missing values. 
@@ -110,11 +114,13 @@ So let's try :
 
 ![Texte alternatif](src/clusters_kmeans_basedon_barycenters_1.PNG)
 
-We get a `silouhette_score = 0.4104913499777463` which makes it a bit worst than before.
-Yet, let's not forget that it makes it worst on this particular case (cf removed randomness) but it doesn't mean
+We get a `silouhette_score = 0.4104913499777463` which makes it a bit worst than before but still relatively close.
+Yet, let's not forget that it makes 
+it worst on this particular case (cf removed randomness) but it doesn't mean
 it will be worst for other cases. 
 Which means we will have to do some statistics to see if it is true or not.
 
+### Statistics
 
 
 
