@@ -38,13 +38,16 @@ It will use centroids that will choose locations that minimizes the distance fro
 By the way, these centroids will give us a good position for the restock "hub" because in each cluster,
 the centroids have the lowest distance from each locations of the cluster.
 
-Note that I have used `random_state = 42` in this part to be able to compare data without worrying about randomness.
-
-From what I have read from the documentation, the initialization of the centroid is by default on the option `k-mean++` which mean there no reasons to apply the algorithm multiple times with random centroids and keep the best. This is what I would have done if I had to implement the algorithm alone.
 
 ### Metrics
 
-I didn't know metrics to evaluate clusters so I have done research and came across silhouette score. I will be using the one from `sklearn`.
+I didn't know metrics to evaluate clusters so I have done research 
+and came across `silhouette score`. I will be using the one from `sklearn`.
+We will be comparing data, so as for now, 
+I will remove the randomness (to be precise, I will choose a random state) 
+from the code until the conclusion where I will do statistics to see if it is relevant on large scale of time. 
+It means that the initial centroids will be fixed 
+but chosen randomly (`random_state = 42`), I will select 250 locations from a fixed random locations (`random_state = 42`)
 
 
 
@@ -56,7 +59,8 @@ First, I applied the algorithm and plot the result raw.
 
 ### Scaling data
 
-We see that we have outline values that KMeans has trouble to process.
+In this case, we see that we don't have outline values but we know they exist.
+KMeans would have issues treating them.
 A simple solution is to scale the data :
 
 ![Texte alternatif](src/clusters_kmeans.png)
@@ -65,8 +69,11 @@ A simple solution is to scale the data :
 ### Plot the circles based on the centroids
 
 As we can see, clusters seems to be found but It is clearly not visible.
+
+We get a `silhouette score = 0.43552443286869597` which is great but not perfect
+since we are looking for a value that is close to 1. 
 Lets try to plot circles that take as center the centroid of the cluster and the radius
-the maximum of the distances from the centroid.
+the maximum of the distances from the centroid to see what is going on.
 
 ![Texte alternatif](src/clusters_kmeans_circles.png)
 
@@ -84,7 +91,7 @@ clusters for exemple 4,5 and 6.
 ![Texte alternatif](src/clusters_kmeans_4_to_6.png)
 
 We see that the problem remains. Good thing is that the clusters seems to be coherent.
-This means that centroids won't be usefull. Let's try another approach and compute "new" centroids, which are called barycenter, using the cluster found by kmeans. I will use this formula :
+This means that centroids won't be useful. Let's try another approach and compute "new" centroids, which are called barycenter, using the cluster found by kmeans. I will use this formula :
 
 ![Texte alternatif](src/formula_barycenter_1.png)
 ![Texte alternatif](src/formula_barycenter_2.png)
