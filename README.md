@@ -141,7 +141,7 @@ I am going to assume to compare the mean of the silhouette scores.
 I will choose seed from `random_state = 0` to `random_state = 100`.
 
 
-![Texte alternatif](src/stats_scores.PNG)
+![Texte alternatif](src/stats_scores.png)
 
 We get `silhouette_score_centroid = 0.4451892411594596` and 
 `silhouette_score_barycenters = 0.4282781939417761` which means in this case, my method
