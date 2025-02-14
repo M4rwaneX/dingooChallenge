@@ -141,7 +141,14 @@ I am going to assume to compare the mean of the silhouette scores.
 I will choose seed from `random_state = 0` to `random_state = 100`.
 
 
+![Texte alternatif](src/stats_scores.PNG)
 
+We get `silhouette_score_centroid = 0.4451892411594596` and 
+`silhouette_score_barycenters = 0.4282781939417761` which means in this case, my method
+is slightly less efficient. To go even further, I should play with the other parameters
+such as the number of locations inside each clusters for exemple.
+
+### Another approach : numbers of clusters
 
 
 
