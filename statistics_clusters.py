@@ -1,41 +1,33 @@
 import pandas as pd
 import numpy as np
 import sklearn
+import kmeans,data_base
+import matplotlib.pyplot as plt
 
 
-def compute_barycenters(kmeans,centroids,sample):
-    barycenters = []
-    for i in range(len(centroids)):
-        points_cluster = sample.loc[kmeans.labels_ == i,
-        ['Longitude_scaled', 'Latitude_scaled']].values
-        sum_x = 0
-        sum_y = 0
-        for i in range(len(points_cluster)):
-            sum_x = sum_x + points_cluster[i][0]
-            sum_y = sum_y + points_cluster[i][1]
-        barycenters.append([sum_x/len(points_cluster),sum_y/len(points_cluster)])
-    return barycenters
+class statistics_clusters:
+    def __init__(self,database):
+        self.database = database
 
-# Initialize database
-data_base = pd.read_excel(r"inputs\data_base.xlsx")
+    def plot_silhouette_scores(self,n):
+        silhouette_score_centroids = []
+        silhouette_score_barycenters = []
+        for i in range(n):
+            kmeans_plots = kmeans.KMeans_plots(25,
+                                               self.database.get_random_sample(250, i),
+                                               i)
+            silhouette_score_barycenters.append(kmeans_plots.get_silouhette_score_barycenters())
+            silhouette_score_centroids.append(kmeans_plots.get_silouhette_score_centroid())
+        silhouette_score_centroids = np.array(silhouette_score_centroids)
+        silhouette_score_barycenters = np.array(silhouette_score_barycenters)
+        plt.figure(figsize=(10, 5))
+        plt.plot(range(0, n), silhouette_score_centroids, marker='o', linestyle='-', label='t')
+        plt.plot(range(0, n), silhouette_score_barycenters, marker='s', linestyle='--', label='p')
+        plt.xlabel('Seed number i')
+        plt.ylabel('Silhouette Score')
+        print("Mean centroid = ", np.mean(silhouette_score_centroids))
+        print("Barycenter centroid = ", np.mean(silhouette_score_barycenters))
+        plt.show()
 
 
-for n in range(10):
-    # Selects 200 to 300 deliveries from the dataset
-    sample = data_base.sample(n=np.random.randint(200, 301))
-
-    # We want about 20 to 30 locations for each clusters
-    num_clusters = len(sample) // 25
-
-    scaler = sklearn.preprocessing.StandardScaler()
-    sample[['Latitude_scaled', 'Longitude_scaled']] = scaler.fit_transform(
-        sample[['GPS - Latitude', 'GPS - Longitude']])
-    kmeans = sklearn.cluster.KMeans(n_clusters=num_clusters, random_state=n)
-    sample['Cluster_kmeans'] = kmeans.fit_predict(sample[['Latitude_scaled', 'Longitude_scaled']])
-    barycenters = compute_barycenters(kmeans,kmeans.cluster_centers_,sample)
-    kmeans_barycenters = sklearn.cluster.KMeans(n_clusters=num_clusters,init=barycenters)
-    sample['Cluster_kmeans_barycenters'] = kmeans_barycenters.fit_predict(
-        sample[['Latitude_scaled', 'Longitude_scaled']])
-    print(sklearn.metrics.silhouette_score(sample[['Latitude_scaled', 'Longitude_scaled']],sample['Cluster_kmeans']))
-    print(sklearn.metrics.silhouette_score(sample[['Latitude_scaled', 'Longitude_scaled']],sample['Cluster_kmeans_barycenters']))
 
