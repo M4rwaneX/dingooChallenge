@@ -47,5 +47,21 @@ class statistics_clusters:
         print("Mean = ", np.mean(silhouette_score_centroids))
         plt.show()
 
+    def plt_max_silhouette(self,n):
+        max_silhouette_score_centroids = np.empty((0, 2))
+        for j in range(n):
+            silhouette_score_centroids = []
+            for i in range(15, 30):
+                kmeans_plots = kmeans.KMeans_plots(i,
+                                                   self.database.get_random_sample(250, j),
+                                                   j)
+                silhouette_score_centroids.append(kmeans_plots.get_silouhette_score_centroid())
+            maximum = max(silhouette_score_centroids)
+            index = kmeans_plots.loc_per_clusters
+            max_silhouette_score_centroids = np.vstack([max_silhouette_score_centroids, np.array([index, maximum])])
+        plt.figure(figsize=(10, 5))
+        plt.scatter(max_silhouette_score_centroids[:,0],max_silhouette_score_centroids[:,1],
+                 marker='o', linestyle='-')
+        plt.show()
 
 
