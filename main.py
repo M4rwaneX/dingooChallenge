@@ -99,5 +99,5 @@ plt.show()
 
 
 stats = statistics_clusters.statistics_clusters(database)
-stats.plot_silhouette_scores(50)
+stats.plot_silhouette_scores(100)
 
