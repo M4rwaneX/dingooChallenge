@@ -30,5 +30,22 @@ class statistics_clusters:
         print("Barycenter centroid = ", np.mean(silhouette_score_barycenters))
         plt.show()
 
+    def plt_silhouette_score_differents_k(self):
+        silhouette_score_centroids = []
+        for i in range(5,60):
+            kmeans_plots = kmeans.KMeans_plots(i,
+                                               self.database.get_random_sample(250, 42),
+                                               42)
+            silhouette_score_centroids.append(kmeans_plots.get_silouhette_score_centroid())
+        plt.figure(figsize=(10, 5))
+        plt.plot(range(5, 60), silhouette_score_centroids, marker='o', linestyle='-',
+                 label='Silhouette score centroids')
+
+        plt.legend(loc='best')
+        plt.xlabel('Number of locations per clusters')
+        plt.ylabel('Silhouette Score')
+        print("Mean = ", np.mean(silhouette_score_centroids))
+        plt.show()
+
 
 
