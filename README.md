@@ -191,4 +191,4 @@ Let's plot the map to see what it looks like (for `random_state = 42`):
 
 ![Texte alternatif](src/clusters_kmeans_1.PNG)
 
-We see that we have clear clusters that almost don't override each other, which explain why the score is better.
+We see that we have clear clusters that almost don't override each other, which explain why the score is better, but we see that they are clusters that are that locations that are very far away from each others.
