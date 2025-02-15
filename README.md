@@ -9,7 +9,7 @@ Each plot is numbered in `main.py` so that eveything I have shown
 is reproductible.
 
 I have used AI generation for docstring documentation. I have used it only
-for this task, every other thing has been written by hand by me.
+for this task, every other things has been written by hand by me.
 
 Note: I am aware that this is not flexible enough to be able to receive other
 types of data (for exemple another type of excel etc). I thought about a
