@@ -8,7 +8,8 @@ Each method is describe and what it should ouput.
 Each plot is numbered in `main.py` so that eveything I have shown
 is reproductible.
 
-I have used AI generation for docstring documentation. I have used it only
+I have used AI generation for docstring documentation, since I was short on time. I hope
+it is not an issue. I have used it only
 for this task, every other things has been written by hand by me.
 
 Note: I am aware that this is not flexible enough to be able to receive other
@@ -23,7 +24,7 @@ Firstly, the data doesn't have any missing values.
 It has `4745 entries` with 4 columns : `Cód.Postal`,`Localidade`,
 `Morada completa`,`GPS - Latitude` and `GPS - Longitude`.  
 
-Since I have access to coordinates, I decide to plot the distribution of deliveries by locations:  
+Since I have access to coordinates, I decided to plot the distribution of deliveries by locations:  
 
 Plot 1
 ![Texte alternatif](src/delivery_locations_distribution.PNG)  
@@ -232,6 +233,8 @@ such as :
 
 - Use other algorithms (such as DBScan for exemple)
 - Perfom rigorous statistics
+- Explore clusters interactively
+- Automatise the analyse for any type of data (developp a flexible framework)
 
 
 
