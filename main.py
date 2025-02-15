@@ -97,9 +97,10 @@ plt.show()
 
 """
 
+# Statistics plots
 
 stats = statistics_clusters.statistics_clusters(database)
 #stats.plot_silhouette_scores(100)
 #stats.plt_silhouette_score_differents_k()
-stats.plt_max_silhouette(30)
+stats.plt_max_silhouette(100)
 
