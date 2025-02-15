@@ -178,7 +178,17 @@ So if we assume that this statistic is representative of our sample, this is the
 
 Note : this tweak "only" enhance the score to about 0.2 in the best case, in general.
 
-### Bonus : Not restraining the number of locations per clusters
+### Not restraining the number of locations per clusters
+
+On the 2 differents plots just before we see that we could get better performances with a bigger or lower number of locations per clusters but I suspect it to be overfitting or underfitting.
+First let's see the previous plot but with a range of number of locations per clusters from 5 to about 60, still on 100 different seeds. 
+
+![Texte alternatif](src/stats_scores_max_k_2.PNG)
+
+We get a maximum score of `0.596043580771597` reached for 60 locations per clusters.
+Let's plot the map to see what it looks like (for `random_state = 42`): 
 
 
+![Texte alternatif](src/clusters_kmeans_1.PNG)
 
+We see that we have clear clusters that almost don't override each other, which explain why the score is better.
