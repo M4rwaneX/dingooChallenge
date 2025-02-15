@@ -82,9 +82,9 @@ stats.plt_silhouette_score_differents_k(5,60)
 """
 
 # Plot 11
-"""
-#stats.plt_max_silhouette(100,15,35)
-"""
+
+stats.plt_max_silhouette(100,15,35)
+
 
 
 # Plot 12

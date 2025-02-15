@@ -11,11 +11,19 @@ class KMeans_plots:
         self.sample = sample
         if seed is not None:
             self.seed = seed
+        
+        # Fit KMeans on unscaled data
         self.kmeans = sklearn.cluster.KMeans(n_clusters=self.get_k(), random_state=self.seed)
-        self.sample['Cluster_kmeans'] = self.kmeans.fit_predict(self.sample[['GPS - Latitude', 'GPS - Longitude']])
+        self.sample['Cluster_kmeans_unscaled'] = self.kmeans.fit_predict(self.sample[['GPS - Latitude', 'GPS - Longitude']])
         self.scale_data()
+
+        # Fit KMeans on scaled data
         self.sample['Cluster_kmeans'] = self.kmeans.fit_predict(self.sample[['Latitude_scaled', 'Longitude_scaled']])
+        
+        # Compute barycenters of clusters
         barycenters = self.compute_barycenters(self.kmeans)
+
+        # Fit KMeans with centroids initialized on barycenters computed before
         self.kmeans_barycenters = sklearn.cluster.KMeans(n_clusters=self.get_k(), init=barycenters)
         self.sample['Cluster_kmeans_barycenters'] = self.kmeans_barycenters.fit_predict(
             self.sample[['Latitude_scaled', 'Longitude_scaled']])
@@ -117,7 +125,7 @@ class KMeans_plots:
 
         """
         plt.figure(figsize=(10, 6))
-        sns.scatterplot(x=self.sample['GPS - Longitude'], y=self.sample['GPS - Latitude'], hue=self.sample['Cluster_kmeans'],
+        sns.scatterplot(x=self.sample['GPS - Longitude'], y=self.sample['GPS - Latitude'], hue=self.sample['Cluster_kmeans_unscaled'],
                         palette='viridis')
         plt.title("Clustered Delivery Routes using KMEANS")
         plt.xlabel("Longitude")
@@ -197,9 +205,14 @@ class KMeans_plots:
         """
         max_distances_centroid, mean_distances_centroid = self.max_mean_distance(self.kmeans.cluster_centers_)
         plt.figure(figsize=(10, 6))
+
+        # Change values 4 and 7 to range the clusters ploted
         for n in range(4, 7):
+
+            # Find the points of cluster n
             points_cluster = self.sample.loc[self.kmeans.labels_ == n,
             ['Longitude_scaled', 'Latitude_scaled']].values
+            
             sns.scatterplot(x=points_cluster[:, 0],
                             y=points_cluster[:, 1],
                             alpha=0.5)
@@ -257,13 +270,15 @@ class KMeans_plots:
     -------
     None (Displays a scatter plot with circles around barycenters)
         """
-    
         barycenters = self.compute_barycenters(self.kmeans)
         max_distances_barycenter, mean_distances_barycenter = self.max_mean_distance(barycenters)
         plt.figure(figsize=(10, 6))
         for n in range(6):
+
+             # Find the points of cluster n
             points_cluster = self.sample.loc[self.kmeans.labels_ == n,
             ['Longitude_scaled', 'Latitude_scaled']].values
+
             sns.scatterplot(x=points_cluster[:, 0],
                             y=points_cluster[:, 1],
                             alpha=0.5)
@@ -292,8 +307,11 @@ class KMeans_plots:
         max_distances_barycenter, mean_distances_barycenter = self.max_mean_distance(barycenters)
         plt.figure(figsize=(10, 6))
         for n in range(len(self.kmeans_barycenters.cluster_centers_)):
+            
+            # Find the points of cluster n
             points_cluster = self.sample.loc[self.kmeans_barycenters.labels_ == n,
             ['Longitude_scaled', 'Latitude_scaled']].values
+
             sns.scatterplot(x=points_cluster[:, 0],
                             y=points_cluster[:, 1],
                             alpha=0.5)

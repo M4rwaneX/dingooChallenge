@@ -39,6 +39,8 @@ class statistics_clusters:
         silhouette_score_centroids = []
         silhouette_score_barycenters = []
         for i in range(n):
+
+            # Creates and fit kmeans number i associated to a seed 
             kmeans_plots = kmeans.KMeans_plots(25,
                                                self.database.get_random_sample(250, i),
                                                i)
@@ -87,11 +89,13 @@ class statistics_clusters:
     None (Displays a line plot showing silhouette scores for different values of `k`)
         """
         silhouette_score_centroids = []
-        for i in range(5,60):
+        for i in range(n_start,n_end):
+
             kmeans_plots = kmeans.KMeans_plots(i,
                                                self.database.get_random_sample(250, 42),
                                                42)
             silhouette_score_centroids.append(kmeans_plots.get_silouhette_score_centroid())
+
         plt.figure(figsize=(10, 5))
         plt.plot(range(n_start, n_end), silhouette_score_centroids, marker='o', linestyle='-',
                  label='Silhouette score centroids')
@@ -138,22 +142,28 @@ class statistics_clusters:
 
         """
         max_silhouette_score_centroids = np.empty((0, 2))
+
         for locations_per_clusters in range(n_start, n_end):
             silhouette_score_centroids = []
+
             for seed in range(seeds):
                 kmeans_plots = kmeans.KMeans_plots(locations_per_clusters,
                                                    self.database.get_random_sample(250, seed),
                                                    seed)
                 silhouette_score_centroids.append(kmeans_plots.get_silouhette_score_centroid())
+
+            # Find the max of silhouette score for all the seed
             maximum = max(silhouette_score_centroids)
-            index = kmeans_plots.loc_per_clusters
+
+            # Index is the locations per clusters
+            index = locations_per_clusters
             max_silhouette_score_centroids = np.vstack([max_silhouette_score_centroids, np.array([index, maximum])])
         plt.figure(figsize=(10, 5))
         plt.plot(max_silhouette_score_centroids[:,0],max_silhouette_score_centroids[:,1],
                  marker='o', linestyle='-')
         plt.xlabel('Number of locations per clusters')
         plt.ylabel('Silhouette Score')
-        print("Silhouette score max = ",max(max_silhouette_score_centroids[:,1]))
+        print("Silhouette score max = ",max([max_silhouette_score_centroids[i,1] for i in range(20,31)]))
         plt.title("Maximum silhouette for 100 differents seed")
         plt.show()
 
