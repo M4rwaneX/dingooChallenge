@@ -82,9 +82,10 @@ stats.plt_silhouette_score_differents_k(5,60)
 """
 
 # Plot 11
-
+# Change n_start and n_end values to 20 and 31 to get the score I got.
+"""
 stats.plt_max_silhouette(100,15,35)
-
+"""
 
 
 # Plot 12

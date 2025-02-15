@@ -163,7 +163,7 @@ class statistics_clusters:
                  marker='o', linestyle='-')
         plt.xlabel('Number of locations per clusters')
         plt.ylabel('Silhouette Score')
-        print("Silhouette score max = ",max([max_silhouette_score_centroids[i,1] for i in range(20,31)]))
+        print("Silhouette score max = ",max(max_silhouette_score_centroids[:,1]))
         plt.title("Maximum silhouette for 100 differents seed")
         plt.show()
 
