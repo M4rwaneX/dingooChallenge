@@ -169,9 +169,16 @@ We see that the maximum for our range is around 20 locations per clusters. Let's
 that it is only for `random_state = 42`.
 Since we are looking for an answer, let's find the maximum for multiple seeds (here a 100)
 and compute the barycenter of all those points, this way we will have a weighted mean of
-the coordinates.
+the coordinates. Here is the plot to make more clear :
 
+![Texte alternatif](src/stats_scores_max_k.png)
 
+We get a maximum score of `0.5205499806280309` between 20 and 30 locations per clusters reached on `30` locations per clusters.
+So if we assume that this statistic is representative of our sample, this is the optimum we should choose. But again, my statistics are very basic and might not be representative of the entire sample, but I will assume it to represent my idea.
+
+Note : this tweak "only" enhance the score to about 0.2 in the best case, in general.
+
+### Bonus : Not restraining the number of locations per clusters
 
 
 
