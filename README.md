@@ -5,6 +5,11 @@
 
 Every plots that I have used is available in the differents `.py` files.
 Each method is describe and what it should ouput.
+Each plot is numbered in `main.py` so that eveything I have shown
+is reproductible.
+
+I have used AI generation for docstring documentation. I have used it only
+for this task, every other thing has been written by hand by me.
 
 Note: I am aware that this is not flexible enough to be able to receive other
 types of data (for exemple another type of excel etc). I thought about a
@@ -19,18 +24,22 @@ It has `4745 entries` with 4 columns : `Cód.Postal`,`Localidade`,
 `Morada completa`,`GPS - Latitude` and `GPS - Longitude`.  
 
 Since I have access to coordinates, I decide to plot the distribution of deliveries by locations:  
-  
+
+Plot 1
 ![Texte alternatif](src/delivery_locations_distribution.PNG)  
   
 And zoomed, we get :  
   
+Plot 1
 ![Texte alternatif](src/delivery_locations_distribution_zoom.PNG)
   
   
 The first thing that surprises me is that globaly, 
 we have a huge cluster with some few points that we will have to treat apart.  
 
-We can look for where the density is the highest using a density map :  
+We can look for where the density is the highest using a density map :
+
+Plot 2
 ![Texte alternatif](src/density_heatmap.PNG)
   
 Not surprisingly, the highest density is near the city center.
@@ -38,6 +47,7 @@ Not surprisingly, the highest density is near the city center.
 I tried to see how postal codes are distribuated, It gives a good idea what zones 
 are covered.
 
+Plot 3
 ![Texte alternatif](src/delivery_locations_distribution_postal_code.PNG)
 
 ## Clusters
@@ -70,6 +80,7 @@ but chosen randomly (`random_state = 42`), I will select 250 locations from a fi
 
 First, I applied the algorithm and plot the result raw.
 
+Plot 4
 ![Texte alternatif](src/clusterskmeansunscaled.PNG)
 
 ### Scaling data
@@ -78,6 +89,7 @@ In this case, we see that we don't have outline values but we know they exist.
 KMeans would have issues treating them.
 A simple solution is to scale the data :
 
+Plot 5
 ![Texte alternatif](src/clusters_kmeans.png)
 
 
@@ -90,16 +102,19 @@ since we are looking for a value that is close to 1.
 Lets try to plot circles that take as center the centroid of the cluster and the radius
 the maximum of the distances from the centroid to see what is going on.
 
+Plot 6
 ![Texte alternatif](src/clusters_kmeans_circles.png)
 
 It starts to be much more visible but let's remove some clusters and take
 only 0,1 and 2.
 
+Plot 6
 ![Texte alternatif](src/clusters_kmeans_0_to_2.png)
 
 
 And now clusters 4,5 and 6.
 
+Plot 6
 ![Texte alternatif](src/clusters_kmeans_4_to_6.png)
 
 We see that the centroids don't really represent the center of the clusters
@@ -113,6 +128,7 @@ using these formulas :
 
 Now let's plot the circles but this time around the barycenters :
 
+Plot 7
 ![Texte alternatif](src/clusters_kmeans_circles_barycenters.PNG)
 
 We see that the barycenters seems to be much more coherent to use. 
@@ -123,6 +139,7 @@ I thought about it because KMeans minimizes the distances from the centroids and
 are the "mean" of the minimum when it comes to the distances from locations of the cluster.
 So let's try :
 
+Plot 8
 ![Texte alternatif](src/clusters_kmeans_basedon_barycenters_1.PNG)
 
 We get a `silouhette_score = 0.4104913499777463` which makes it a bit worse than before but still relatively close.
@@ -140,7 +157,7 @@ of the one generated using "normal centroids" and the one using barycenters as c
 I am going to assume to compare the mean of the silhouette scores.
 I will choose seed from `random_state = 0` to `random_state = 100`.
 
-
+Plot 9
 ![Texte alternatif](src/stats_scores.png)
 
 We get `silhouette_score_centroid = 0.4451892411594596` and 
@@ -163,6 +180,7 @@ So let's see what results we have if we lock again `random_state = 42`.
 we want to see if the maximum we found might be only local ), we are going to see
 how `silhouette_score_centroid` change.
 
+Plot 10
 ![Texte alternatif](src/stats_scores_k.png)
 
 We see that the maximum for our range is around 20 locations per clusters. Let's not forget
@@ -171,6 +189,7 @@ Since we are looking for an answer, let's find the maximum for multiple seeds (h
 and compute the barycenter of all those points, this way we will have a weighted mean of
 the coordinates. Here is the plot to make more clear :
 
+Plot 11
 ![Texte alternatif](src/stats_scores_max_k.PNG)
 
 We get a maximum score of `0.5205499806280309` between 20 and 30 locations per clusters reached on `30` locations per clusters.
@@ -183,12 +202,14 @@ Note : this tweak "only" enhance the score to about 0.2 in the best case, in gen
 On the 2 differents plots just before we see that we could get better performances with a bigger or lower number of locations per clusters but I suspect it to be overfitting or underfitting.
 First let's see the previous plot but with a range of number of locations per clusters from 5 to about 60, still on 100 different seeds. 
 
+Plot 12
 ![Texte alternatif](src/stats_scores_max_k_2.PNG)
 
 We get a maximum score of `0.596043580771597` reached for 60 locations per clusters.
 Let's plot the map to see what it looks like (for `random_state = 42`): 
 
 
+Plot 13
 ![Texte alternatif](src/clusters_kmeans_1.PNG)
 
 We see that we have clear clusters that almost don't override each other, which explain why the score is better, but we see that they are clusters that are that locations that are very far away from each others.
@@ -202,3 +223,16 @@ We had 2 approachs to enhance the performance:
 
 - Use custom centroids, here the barycenter of the first clusters computed
 - Try to find the most optimum number of locations per cluster
+
+## Areas for improvement
+
+Since I was in lack of time, I had to avoid some subjects (that could improve
+the performance or atleast give a good idea if specific method are good enough)
+such as :
+
+- Use other algorithms (such as DBScan for exemple)
+- Perfom rigorous statistics
+
+
+
+
