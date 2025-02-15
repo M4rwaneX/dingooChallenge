@@ -215,6 +215,10 @@ Plot 13
 
 We see that we have clear clusters that almost don't override each other, which explain why the score is better, but we see that they are clusters that are that locations that are very far away from each others.
 
+I am thinking about run KMeans on the clusters to see if It could find clusters insinde them.
+
+Unfortunately, I won't have time to pursue this axis.
+
 
 ### Conclusion
 
@@ -224,6 +228,8 @@ We had 2 approachs to enhance the performance:
 
 - Use custom centroids, here the barycenter of the first clusters computed
 - Try to find the most optimum number of locations per cluster
+
+We have see
 
 ## Areas for improvement
 
