@@ -192,3 +192,13 @@ Let's plot the map to see what it looks like (for `random_state = 42`):
 ![Texte alternatif](src/clusters_kmeans_1.PNG)
 
 We see that we have clear clusters that almost don't override each other, which explain why the score is better, but we see that they are clusters that are that locations that are very far away from each others.
+
+
+### Conclusion
+
+To conclude, I have used kmeans algorithm because we are capped with locations per clusters so ultimately, the number of clusters : this is why I thought about it.
+
+We had 2 approachs to enhance the performance:
+
+- Use custom centroids, here the barycenter of the first clusters computed
+- Try to find the most optimum number of locations per cluster
